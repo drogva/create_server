@@ -202,7 +202,7 @@ def create_user_server_background(user_no, token):
 
     try:
         # 1. 보안 그룹 조회
-        sg_url = f"{network_endpoint}/v2.0/security-groups?name=AIHub-User-{user_no}"
+        sg_url = f"{network_endpoint}/v2.0/security-groups?name=Test-User-{user_no}"
         sg_res = requests.get(sg_url, headers=headers).json()
         sg_user = sg_res['security_groups'][0]['id']
         
@@ -402,7 +402,7 @@ def create_user_server(user_no, token):
     
     try:
         # 1. 보안 그룹 조회
-        sg_url = f"{COMPUTE_ENDPOINT.replace('instance', 'network')}/v2.0/security-groups?name=AIHub-User-{user_no}"
+        sg_url = f"{COMPUTE_ENDPOINT.replace('instance', 'network')}/v2.0/security-groups?name=Test-User-{user_no}"
         sg_res = requests.get(sg_url, headers=headers).json()
         
         if not sg_res.get('security_groups'):
@@ -707,7 +707,7 @@ def nova_create_image(compute_base: str, tenant_id: str, server_id: str, token: 
 
 
 # 페이지 설정
-st.set_page_config(layout="wide", page_title="AIHub Infra Manager")
+st.set_page_config(layout="wide", page_title="Test Infra Manager")
 
 # 1. 탭 메뉴 구성
 tab1, tab2, tab3, tab4 = st.tabs([
@@ -828,4 +828,5 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
