@@ -159,7 +159,7 @@ ALL=$(curl -s -X GET "https://kr1-api-instance-infrastructure.nhncloudservice.co
   -H "X-Auth-Token: $OS_TOKEN")
 
 # ----------------------------
-# 2) 이름이 user로 시작하고, testXX-(cpu|gpu|win) 패턴만 필터
+# 2) 이름이 test로 시작하고, testXX-(cpu|gpu|win) 패턴만 필터
 # ----------------------------
 echo "$ALL" \
   | jq -r '
