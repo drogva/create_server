@@ -27,7 +27,7 @@ send_kakao() {
 # NHN Token
 # ----------------------------
 refresh_nhn_token() {
-  OS_TOKEN=$(curl -s -X POST "https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens" \
+  OS_TOKEN=$(curl -s -X POST "https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens" \
     -H "Content-Type: application/json" \
     -d "{ \"auth\": { \"tenantId\": \"$T_ID\", \"passwordCredentials\": { \"username\": \"$USER_ID\", \"password\": \"$USER_PW\" } } }" \
     | jq -r '.access.token.id')
@@ -39,28 +39,28 @@ refresh_nhn_token
 # ----------------------------
 expected_vcpu() {
   case "$1" in
-    cpu|gpu|win) echo "8" ;;
+    cpu|gpu|win) echo "4" ;;
     *)           echo "0" ;;
   esac
 }
 expected_ram_gb() {
   case "$1" in
-    cpu) echo "64" ;;
-    gpu) echo "90" ;;
-    win) echo "32" ;;
+    cpu) echo "8" ;;
+    gpu) echo "32" ;;
+    win) echo "16" ;;
     *)   echo "0" ;;
   esac
 }
 expected_disk_gb() {
   case "$1" in
-    cpu|gpu) echo "500" ;;
-    win)     echo "100" ;;
+    cpu|gpu) echo "200" ;;
+    win)     echo "50" ;;
     *)       echo "0" ;;
   esac
 }
 expected_gpu_tag() {
   case "$1" in
-    gpu) echo "v100" ;;
+    gpu) echo "g2" ;;
     *)   echo "" ;;
   esac
 }
@@ -81,7 +81,7 @@ check_one_server() {
 
   # 서버 상세
   local S_FULL FLAVOR_ID ACTUAL_IP ACTUAL_SG V_ID
-  S_FULL=$(curl -s -X GET "https://kr1-api-instance-infrastructure.gov-nhncloudservice.com/v2/$T_ID/servers/$S_ID" \
+  S_FULL=$(curl -s -X GET "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/$T_ID/servers/$S_ID" \
     -H "X-Auth-Token: $OS_TOKEN")
 
   FLAVOR_ID=$(echo "$S_FULL" | jq -r '.server.flavor.id')
@@ -91,7 +91,7 @@ check_one_server() {
 
   # Flavor
   local FLAVOR_RAW V_CPU RAM_MB RAM_GB FLAVOR_NAME EXTRA_SPECS
-  FLAVOR_RAW=$(curl -s -X GET "https://kr1-api-instance-infrastructure.gov-nhncloudservice.com/v2/$T_ID/flavors/$FLAVOR_ID" \
+  FLAVOR_RAW=$(curl -s -X GET "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/$T_ID/flavors/$FLAVOR_ID" \
     -H "X-Auth-Token: $OS_TOKEN")
 
   V_CPU=$(echo "$FLAVOR_RAW" | jq -r '.flavor.vcpus // "0"')
@@ -106,7 +106,7 @@ check_one_server() {
   V_SIZE="0"
   if [ -n "${V_ID:-}" ]; then
     local V_RAW
-    V_RAW=$(curl -s -X GET "https://kr1-api-block-storage-infrastructure.gov-nhncloudservice.com/v2/$T_ID/volumes/$V_ID" \
+    V_RAW=$(curl -s -X GET "https://kr1-api-block-storage-infrastructure.nhncloudservice.com/v2/$T_ID/volumes/$V_ID" \
       -H "X-Auth-Token: $OS_TOKEN")
     V_TYPE=$(echo "$V_RAW" | jq -r '.volume.volume_type // "N/A"')
     V_SIZE=$(echo "$V_RAW" | jq -r '.volume.size // "0"')
@@ -155,16 +155,16 @@ echo "🚀 user* 인스턴스 자동 탐색 → cpu/gpu/win 스펙 검증 시작
 # 1) 전체 서버 목록 조회
 #    (이 API는 limit/pagination이 있을 수 있음. 필요 시 marker/next 처리 추가 가능)
 # ----------------------------
-ALL=$(curl -s -X GET "https://kr1-api-instance-infrastructure.gov-nhncloudservice.com/v2/$T_ID/servers" \
+ALL=$(curl -s -X GET "https://kr1-api-instance-infrastructure.nhncloudservice.com/v2/$T_ID/servers" \
   -H "X-Auth-Token: $OS_TOKEN")
 
 # ----------------------------
-# 2) 이름이 user로 시작하고, userXX-(cpu|gpu|win) 패턴만 필터
+# 2) 이름이 user로 시작하고, testXX-(cpu|gpu|win) 패턴만 필터
 # ----------------------------
 echo "$ALL" \
   | jq -r '
       .servers[]
-      | select(.name | test("^user[0-9]+-(cpu|gpu|win)$"))
+      | select(.name | test("^test[0-9]+-(cpu|gpu|win)$"))
       | "\(.id) \(.name)"
     ' \
   | while read -r SID SNAME; do
