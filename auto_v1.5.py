@@ -269,13 +269,13 @@ def create_user_server_background(user_no, token):
            
         # 3. CPU & WIN 생성 호출 (env에서 가져온 이미지/플래버 사용)
         cpu_ok = _request_server_with_ip(
-            f"user{user_no}-cpu", 
+            f"test{user_no}@linux", 
             os.getenv("NHN_FLAVOR_CPU"), 
             os.getenv("NHN_IMG_CPU"), 
             500, f"1{user_no}"
         )
         win_ok = _request_server_with_ip(
-            f"user{user_no}-win", 
+            f"test{user_no}@window", 
             os.getenv("NHN_FLAVOR_WIN"), 
             os.getenv("NHN_IMG_WIN"), 
             100, user_no
@@ -461,15 +461,15 @@ def create_user_server(user_no, token):
             return requests.post(server_url, headers=headers, json=server_data)
 
         # 3. CPU/WIN 생성 실행
-        cpu_res = _request_server(f"user{user_no}-cpu", st.secrets["nhn_ids"]["FLAVOR_CPU"], st.secrets["nhn_ids"]["CPU_IMG"], f"1{user_no}", sg_list)
+        cpu_res = _request_server(f"test{user_no}@linux", st.secrets["nhn_ids"]["FLAVOR_CPU"], st.secrets["nhn_ids"]["CPU_IMG"], f"1{user_no}", sg_list)
         if cpu_res.status_code in [200, 202]:
-            st.success(f"✅ User {user_no} CPU 생성 성공")
+            st.success(f"✅ Test {user_no} linux 생성 성공")
         else:
             st.error(f"❌ CPU 생성 실패: {cpu_res.text}")
 
-        win_res = _request_server(f"user{user_no}-win", st.secrets["nhn_ids"]["FLAVOR_WIN"], st.secrets["nhn_ids"]["WIN_IMG"], user_no, sg_list)
+        win_res = _request_server(f"test{user_no}@win", st.secrets["nhn_ids"]["FLAVOR_WIN"], st.secrets["nhn_ids"]["WIN_IMG"], user_no, sg_list)
         if win_res.status_code in [200, 202]:
-            st.success(f"✅ User {user_no} Win 생성 성공")
+            st.success(f"✅ Test {user_no} Window 생성 성공")
 
     except Exception as e:
         st.error(f"🔥 User {user_no} 처리 중 오류: {e}")
@@ -828,6 +828,7 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
 
 
