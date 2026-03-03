@@ -135,7 +135,7 @@ if __name__ == "__main__":
     if tasks:
         print(f"✅ 총 {len(tasks)}건 발견! 슬랙으로 전송합니다.")
         for task in tasks:
-            # 제목에서 이름과 번호 추출 시도
+          
             match = re.search(r"([가-힣]+)\s*\((\d+)\)", task['title'])
             if match:
                 name, no = match.group(1), match.group(2)
@@ -338,7 +338,7 @@ def start_auto_monitoring():
             tasks = get_recent_view_tasks()
             for task in tasks:
                 if task['id'] not in sent_tasks:
-                    # 제목에서 이름/번호 추출
+                   
                     match = re.search(r"\]\s*([가-힣]+)\((\d+)\)", task['title'])
                     if match:
                         name, no = match.group(1), match.group(2)
@@ -828,6 +828,7 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
 
 
