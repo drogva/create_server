@@ -265,7 +265,7 @@ def write_file_sd_json(format_path, cpu_prom_list, gpu_prom_list, cpu_json_path,
         x["targets"][0] = f"{ip}:{port}"
         x["labels"]["job"] = job            # (주의) 환경에 따라 'windows_exporter' vs 'window_exporter'
         x["labels"]["instance_type"] = inst_type
-        x["labels"]["UNIQUE_KEY"] = uniq
+        x["labels"]["hostname"] = uniq
         x["labels"]["instance_name"] = uniq
         x["labels"]["instance_id"] = iid
         obj_list.append(x)
