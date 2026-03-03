@@ -105,7 +105,7 @@ if __name__ == "__main__":
                     blocks=[
                         {
                             "type": "section",
-                            "text": {"type": "mrkdwn", "text": f"🔔 *신규 자원 할당 기안 감지*\n*대상*: {name}({no})\n*제목*: {task['title']}"}
+                            "text": {"type": "mrkdwn", "text": f"🔔 *신규 서버 생성 기안 감지*\n*대상*: {name}({no})\n*제목*: {task['title']}"}
                         },
                         {
                             "type": "actions",
@@ -828,6 +828,7 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
 
 
