@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
                 client.chat_postMessage(
                     channel=CHANNEL_ID,
-                    text=f"🔔 [신규 기안] {name}({no})님의 요청이 감지되었습니다.",
+                    text=f"🔔 [신규 기안] 이 감지되었습니다.",
                     blocks=[
                         {
                             "type": "section",
@@ -143,7 +143,7 @@ if __name__ == "__main__":
                 # [핵심] 슬랙으로 메시지 쏘기
                 client.chat_postMessage(
                     channel=CHANNEL_ID,
-                    text=f"🔔 [신규 기안] {name}({no})님의 요청이 감지되었습니다.",
+                    text=f"🔔 [신규 기안] 요청이 감지되었습니다.",
                     blocks=[
                         {
                             "type": "section",
@@ -828,6 +828,7 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
 
 
