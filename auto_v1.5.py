@@ -64,7 +64,7 @@ def get_recent_view_tasks():
 
             if created_at_dt.replace(tzinfo=None) > scan_limit:
                 subject = post.get("subject", "")
-                if "열람" in subject:
+                if "xxx" in subject:
                     found_tasks.append({
                         "id": post["id"],
                         "title": subject,
@@ -79,7 +79,7 @@ def get_recent_view_tasks():
     return found_tasks
 
 if __name__ == "__main__":
-    print(f"🔍 최근 50일 내 '열람' 건 검색 및 슬랙 발송 시작...")
+    print(f"🔍 최근 50일 내 'xxx' 건 검색 및 슬랙 발송 시작...")
     
     # [수정] 발송 시에도 환경변수에서 로드된 정보 사용
     tasks = get_recent_view_tasks()
@@ -101,11 +101,11 @@ if __name__ == "__main__":
 
                 client.chat_postMessage(
                     channel=CHANNEL_ID,
-                    text=f"🔔 [신규 기안] 이 감지되었습니다.",
+                    text=f"🔔 새로운 요청",
                     blocks=[
                         {
                             "type": "section",
-                            "text": {"type": "mrkdwn", "text": f"🔔 *신규 서버 생성 기안 감지*\n*대상*: {name}({no})\n*제목*: {task['title']}"}
+                            "text": {"type": "mrkdwn", "text": f"🔔 *대상*: {name}({no})\n*제목*: {task['title']}"}
                         },
                         {
                             "type": "actions",
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         print("📭 새로 발송할 기안이 없습니다.")
 
 if __name__ == "__main__":
-    print(f"🔍 최근 50일 내 '열람' 건 검색 및 슬랙 발송 시작...")
+    print(f"🔍 최근 50일 내 'xxx' 건 검색 및 슬랙 발송 시작...")
     tasks = get_recent_view_tasks()
     
     # 슬랙 클라이언트 초기화 (기존 토큰 사용)
@@ -143,11 +143,11 @@ if __name__ == "__main__":
                 # [핵심] 슬랙으로 메시지 쏘기
                 client.chat_postMessage(
                     channel=CHANNEL_ID,
-                    text=f"🔔 [신규 기안] 요청이 감지되었습니다.",
+                    text=f"🔔 새로운 요청.",
                     blocks=[
                         {
                             "type": "section",
-                            "text": {"type": "mrkdwn", "text": f"🔔 *신규 서버 생성 기안 감지*\n*대상*: {name}({no})\n*제목*: {task['title']}"}
+                            "text": {"type": "mrkdwn", "text": f"🔔 *대상*: {name}({no})\n*제목*: {task['title']}"}
                         },
                         {
                             "type": "actions",
@@ -828,6 +828,7 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
 
 
