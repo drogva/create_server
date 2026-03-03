@@ -338,7 +338,7 @@ def start_auto_monitoring():
             tasks = get_recent_view_tasks()
             for task in tasks:
                 if task['id'] not in sent_tasks:
-                    # 제목에서 이름/번호 추출 (김문권(33) 등)
+                    # 제목에서 이름/번호 추출
                     match = re.search(r"\]\s*([가-힣]+)\((\d+)\)", task['title'])
                     if match:
                         name, no = match.group(1), match.group(2)
@@ -346,7 +346,7 @@ def start_auto_monitoring():
                         slack_bot.web_client.chat_postMessage(
                             channel=CHANNEL_ID,
                             blocks=[
-                                {"type": "section", "text": {"type": "mrkdwn", "text": f"🔔 *신규 자원 할당 기안 감지*\n*대상*: {name}({no})\n*제목*: {task['title']}"}},
+                                {"type": "section", "text": {"type": "mrkdwn", "text": f"🔔 *신규 서버 생성 요청 기안 감지*\n*대상*: {name}({no})\n*제목*: {task['title']}"}},
                                 {"type": "actions", "elements": [
                                     {"type": "button", "text": {"type": "plain_text", "text": "🚀 서버 즉시 생성"},
                                      "style": "primary", "value": f"{name}:{no}", "action_id": "approve_create_server"}
@@ -828,5 +828,6 @@ with tab4:
 
         except Exception as e:
             st.error(f"🚨 작업 중단: {e}")
+
 
 
